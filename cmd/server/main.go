@@ -14,24 +14,19 @@ import (
 )
 
 func main() {
-
-	// Получаем текущую рабочую директорию
-	wd, err := os.Getwd()
-	if err != nil {
-		fmt.Println("Ошибка при получении текущей директории:", err)
-		return
-	}
 	deployType := os.Getenv("DEPLOY_TYPE")
 	var configFile string
+	var configPath string
 	if deployType == "remote" {
 		configFile = "remote_config.yaml"
+		configPath = filepath.Join("..", "..", configFile)
 	} else {
-		configFile = "local_config.yaml"
+		configPath = "configs/local_config.yaml"
 	}
-	configPath := filepath.Join(wd, "configs", configFile)
+
 	config, err := pkg.LoadConfig(configPath)
 	if err != nil {
-		fmt.Println("Ошибка при загрузке конфигурации:", err)
+		fmt.Println("Не удалось загрузить конфигурацию:", err)
 		return
 	}
 	fmt.Println(config)
