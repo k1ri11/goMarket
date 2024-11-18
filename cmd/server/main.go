@@ -18,7 +18,7 @@ func main() {
 	var configFile string
 	var configPath string
 	if deployType == "remote" {
-		configFile = "remote_config.yaml"
+		configFile = "configs/remote_config.yaml"
 		configPath = filepath.Join("..", "..", configFile)
 	} else {
 		configPath = "configs/local_config.yaml"
