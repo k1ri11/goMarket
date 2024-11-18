@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"goMarket/internal/routes"
 	"goMarket/pkg"
@@ -8,16 +9,32 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 )
 
 func main() {
 
-	// Загрузка конфигурации
-	config, err := pkg.LoadConfig("configs/config.yaml")
+	// Получаем текущую рабочую директорию
+	wd, err := os.Getwd()
 	if err != nil {
-		println("Не удалось загрузить конфигурацию")
+		fmt.Println("Ошибка при получении текущей директории:", err)
 		return
 	}
+	deployType := os.Getenv("DEPLOY_TYPE")
+	var configFile string
+	if deployType == "remote" {
+		configFile = "remote_config.yaml"
+	} else {
+		configFile = "local_config.yaml"
+	}
+	configPath := filepath.Join(wd, "configs", configFile)
+	config, err := pkg.LoadConfig(configPath)
+	if err != nil {
+		fmt.Println("Ошибка при загрузке конфигурации:", err)
+		return
+	}
+	fmt.Println(config)
 
 	databaseURL := pkg.GetDBUrl(config)
 	println(databaseURL)
