@@ -8,4 +8,4 @@ db:
   name: "go_market_db"
   host: "dpg-cstp0tbv2p9s73csfic0-a.frankfurt-postgres.render.com"
   port: "5432"
-  ssl: "true"
+  sslmode: "enable"
