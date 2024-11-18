@@ -5,6 +5,6 @@ server:
 db:
   user: "kirill"
   password: "jcWHs2n0lco5H4Vqeoiue2KsIxlL0U8F"
-  name: "postgresql://kirill:jcWHs2n0lco5H4Vqeoiue2KsIxlL0U8F@dpg-cstp0tbv2p9s73csfic0-a/go_market_db"
-  host: "dpg-cstp0tbv2p9s73csfic0-a"
+  name: "go_market_db"
+  host: "dpg-cstp0tbv2p9s73csfic0-a.frankfurt-postgres.render.com"
   port: "5432"
