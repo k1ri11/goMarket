@@ -8,7 +8,7 @@ const TableNameOrder = "order"
 
 // Order mapped from table <order>
 type Order struct {
-	OrderID    *int32     `gorm:"column:order_id;type:integer;primaryKey;default:nextval('"Order_order_id_seq"" json:"order_id"`
+	OrderID    *int32     `gorm:"column:order_id;type:integer;primaryKey;autoIncrement:true"`
 	CustomerID *int32     `gorm:"column:customer_id;type:integer" json:"customer_id"`
 	TotalPrice float64    `gorm:"column:total_price;type:numeric(10,2);not null" json:"total_price"`
 	Status     string     `gorm:"column:status;type:character varying(50);not null" json:"status"`

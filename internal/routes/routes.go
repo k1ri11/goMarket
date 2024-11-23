@@ -24,6 +24,18 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 	customerService := services.NewCustomerService(db)
 	customerHandler := handlers.NewCustomerHandler(customerService)
 
+	shoppingCartService := services.NewShoppingCartService(db)
+	shoppingCartHandler := handlers.NewShoppingCartHandler(shoppingCartService)
+
+	cartItemService := services.NewCartItemService(db)
+	cartItemHandler := handlers.NewCartItemHandler(cartItemService)
+
+	orderService := services.NewOrderService(db)
+	orderHandler := handlers.NewOrderHandler(orderService)
+
+	orderItemService := services.NewOrderItemService(db)
+	orderItemHandler := handlers.NewOrderItemHandler(orderItemService)
+
 	api := router.Group("/v1")
 	{
 		//Группа маршрутов для продуктов
@@ -54,6 +66,42 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 			customers.POST("/", customerHandler.CreateCustomer)
 			customers.PUT("/:id", customerHandler.UpdateCustomer)
 			customers.DELETE("/:id", customerHandler.DeleteCustomer)
+		}
+
+		shoppingCarts := api.Group("/shopping_carts")
+		{
+			shoppingCarts.GET("/", shoppingCartHandler.GetAllShoppingCarts)
+			shoppingCarts.GET("/:id", shoppingCartHandler.GetShoppingCartByID)
+			shoppingCarts.POST("/", shoppingCartHandler.CreateShoppingCart)
+			shoppingCarts.PUT("/:id", shoppingCartHandler.UpdateShoppingCart)
+			shoppingCarts.DELETE("/:id", shoppingCartHandler.DeleteShoppingCart)
+		}
+
+		cartItems := api.Group("/cart_items")
+		{
+			cartItems.GET("/", cartItemHandler.GetAllCartItems)
+			cartItems.GET("/:id", cartItemHandler.GetCartItemByID)
+			cartItems.POST("/", cartItemHandler.CreateCartItem)
+			cartItems.PUT("/:id", cartItemHandler.UpdateCartItem)
+			cartItems.DELETE("/:id", cartItemHandler.DeleteCartItem)
+		}
+
+		orders := api.Group("/orders")
+		{
+			orders.GET("/", orderHandler.GetAllOrders)
+			orders.GET("/:id", orderHandler.GetOrderByID)
+			orders.POST("/", orderHandler.CreateOrder)
+			orders.PUT("/:id", orderHandler.UpdateOrder)
+			orders.DELETE("/:id", orderHandler.DeleteOrder)
+		}
+
+		orderItems := api.Group("/order_items")
+		{
+			orderItems.GET("/", orderItemHandler.GetAllOrderItems)
+			orderItems.GET("/:id", orderItemHandler.GetOrderItemByID)
+			orderItems.POST("/", orderItemHandler.CreateOrderItem)
+			orderItems.PUT("/:id", orderItemHandler.UpdateOrderItem)
+			orderItems.DELETE("/:id", orderItemHandler.DeleteOrderItem)
 		}
 
 	}
