@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/mux"
+	"goMarket/internal"
 	"goMarket/internal/handlers"
 	"goMarket/internal/middleware"
 	"goMarket/internal/services"
@@ -21,8 +22,8 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 	categoryService := services.NewCategoryService(db)
 	categoryHandler := handlers.NewCategoryHandler(categoryService)
 
-	customerService := services.NewCustomerService(db)
-	customerHandler := handlers.NewCustomerHandler(customerService)
+	userService := services.NewUserService(db)
+	userHandler := handlers.NewUserHandler(userService)
 
 	shoppingCartService := services.NewShoppingCartService(db)
 	shoppingCartHandler := handlers.NewShoppingCartHandler(shoppingCartService)
@@ -36,11 +37,15 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 	orderItemService := services.NewOrderItemService(db)
 	orderItemHandler := handlers.NewOrderItemHandler(orderItemService)
 
+	authService := services.NewJWTAuthService(internal.JWTSecretKey, db)
+	authHandler := handlers.NewAuthHandler(authService)
+
 	api := router.Group("/v1")
 	{
 		//Группа маршрутов для продуктов
 		products := api.Group("/products")
 		{
+			products.Use(middleware.JWTMiddleware())
 			products.GET("/:id", productHandler.GetProductByID)
 			products.GET("/", productHandler.GetProducts)
 			products.POST("/", productHandler.CreateProduct)
@@ -51,6 +56,7 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 		// Группа маршрутов для категорий
 		categories := api.Group("/categories")
 		{
+			categories.Use(middleware.JWTMiddleware())
 			categories.GET("/", categoryHandler.GetAllCategories)
 			categories.GET("/:id", categoryHandler.GetCategoryByID)
 			categories.POST("/", categoryHandler.CreateCategory)
@@ -59,17 +65,28 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 		}
 
 		// Группа маршрутов для покупателей
-		customers := api.Group("/customers")
+		usersGroup := api.Group("/users")
 		{
-			customers.GET("/", customerHandler.GetAllCustomers)
-			customers.GET("/:id", customerHandler.GetCustomerByID)
-			customers.POST("/", customerHandler.CreateCustomer)
-			customers.PUT("/:id", customerHandler.UpdateCustomer)
-			customers.DELETE("/:id", customerHandler.DeleteCustomer)
+			usersGroup.Use(middleware.JWTMiddleware())
+			usersGroup.GET("/", userHandler.GetAllUsers)
+			usersGroup.GET("/:id", userHandler.GetUserByID)
+			usersGroup.PUT("/:id", userHandler.UpdateCurrentUser)
+			usersGroup.DELETE("/:id", userHandler.DeleteUser)
+
+			usersGroup.GET("/me", userHandler.GetCurrentUser)
+			usersGroup.PATCH("/me", userHandler.UpdateCurrentUser)
+		}
+
+		authGroup := api.Group("/auth")
+		{
+			authGroup.POST("/jwt/login", authHandler.Login)
+			authGroup.POST("/jwt/logout", middleware.JWTMiddleware(), authHandler.Logout)
+			authGroup.POST("/register", userHandler.Register)
 		}
 
 		shoppingCarts := api.Group("/shopping_carts")
 		{
+			shoppingCarts.Use(middleware.JWTMiddleware())
 			shoppingCarts.GET("/", shoppingCartHandler.GetAllShoppingCarts)
 			shoppingCarts.GET("/:id", shoppingCartHandler.GetShoppingCartByID)
 			shoppingCarts.POST("/", shoppingCartHandler.CreateShoppingCart)
@@ -79,6 +96,7 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 
 		cartItems := api.Group("/cart_items")
 		{
+			cartItems.Use(middleware.JWTMiddleware())
 			cartItems.GET("/", cartItemHandler.GetAllCartItems)
 			cartItems.GET("/:id", cartItemHandler.GetCartItemByID)
 			cartItems.POST("/", cartItemHandler.CreateCartItem)
@@ -88,6 +106,7 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 
 		orders := api.Group("/orders")
 		{
+			orders.Use(middleware.JWTMiddleware())
 			orders.GET("/", orderHandler.GetAllOrders)
 			orders.GET("/:id", orderHandler.GetOrderByID)
 			orders.POST("/", orderHandler.CreateOrder)
@@ -97,6 +116,7 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 
 		orderItems := api.Group("/order_items")
 		{
+			orderItems.Use(middleware.JWTMiddleware())
 			orderItems.GET("/", orderItemHandler.GetAllOrderItems)
 			orderItems.GET("/:id", orderItemHandler.GetOrderItemByID)
 			orderItems.POST("/", orderItemHandler.CreateOrderItem)
