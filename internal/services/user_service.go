@@ -1,28 +1,30 @@
 package services
 
 import (
+	"errors"
 	"goMarket/internal/dto"
 	"goMarket/internal/models"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
-type CustomerService struct {
+type UserService struct {
 	db *gorm.DB
 }
 
-func NewCustomerService(db *gorm.DB) *CustomerService {
-	return &CustomerService{db: db}
+func NewUserService(db *gorm.DB) *UserService {
+	return &UserService{db: db}
 }
 
-func (s *CustomerService) GetAllCustomers() ([]dto.CustomerResponse, error) {
-	var customers []models.Customer
-	if err := s.db.Find(&customers).Error; err != nil {
+func (s *UserService) GetAllUsers() ([]dto.UserResponseDTO, error) {
+	var users []models.User
+	if err := s.db.Find(&users).Error; err != nil {
 		return nil, err
 	}
 
-	responses := make([]dto.CustomerResponse, len(customers))
-	for i, customer := range customers {
-		responses[i] = dto.CustomerResponse{
+	responses := make([]dto.UserResponseDTO, len(users))
+	for i, customer := range users {
+		responses[i] = dto.UserResponseDTO{
 			CustomerID: customer.CustomerID,
 			FirstName:  customer.FirstName,
 			LastName:   customer.LastName,
@@ -38,13 +40,13 @@ func (s *CustomerService) GetAllCustomers() ([]dto.CustomerResponse, error) {
 	return responses, nil
 }
 
-func (s *CustomerService) GetCustomerByID(id int) (*dto.CustomerResponse, error) {
-	var customer models.Customer
+func (s *UserService) GetUserByID(id int) (*dto.UserResponseDTO, error) {
+	var customer models.User
 	if err := s.db.First(&customer, id).Error; err != nil {
 		return nil, err
 	}
 
-	response := &dto.CustomerResponse{
+	response := &dto.UserResponseDTO{
 		CustomerID: customer.CustomerID,
 		FirstName:  customer.FirstName,
 		LastName:   customer.LastName,
@@ -59,36 +61,23 @@ func (s *CustomerService) GetCustomerByID(id int) (*dto.CustomerResponse, error)
 	return response, nil
 }
 
-func (s *CustomerService) CreateCustomer(req dto.CreateCustomerRequest) (*dto.CustomerResponse, error) {
-	customer := models.Customer{
-		FirstName: req.FirstName,
-		LastName:  req.LastName,
-		Email:     req.Email,
-		Phone:     req.Phone,
-		Address:   req.Address,
-		City:      req.City,
-		Country:   req.Country,
+func (s *UserService) CreateUser(user models.User) error {
+	if err := s.db.Create(&user).Error; err != nil {
+		return err
 	}
 
-	if err := s.db.Create(&customer).Error; err != nil {
-		return nil, err
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.PasswordHash), bcrypt.DefaultCost)
+	if err != nil {
+		return err
 	}
-
-	return &dto.CustomerResponse{
-		CustomerID: customer.CustomerID,
-		FirstName:  customer.FirstName,
-		LastName:   customer.LastName,
-		Email:      customer.Email,
-		Phone:      customer.Phone,
-		Address:    customer.Address,
-		City:       customer.City,
-		Country:    customer.Country,
-		CreatedAt:  customer.CreatedAt,
-	}, nil
+	user.PasswordHash = string(hash)
+	// Добавляем пользователя в базу
+	s.db.Create(user)
+	return nil
 }
 
-func (s *CustomerService) UpdateCustomer(id int, req dto.UpdateCustomerRequest) (*dto.CustomerResponse, error) {
-	var customer models.Customer
+func (s *UserService) UpdateCustomer(id int, req dto.UpdateUserRequest) (*dto.UserResponseDTO, error) {
+	var customer models.User
 	if err := s.db.First(&customer, id).Error; err != nil {
 		return nil, err
 	}
@@ -119,7 +108,7 @@ func (s *CustomerService) UpdateCustomer(id int, req dto.UpdateCustomerRequest) 
 		return nil, err
 	}
 
-	return &dto.CustomerResponse{
+	return &dto.UserResponseDTO{
 		CustomerID: customer.CustomerID,
 		FirstName:  customer.FirstName,
 		LastName:   customer.LastName,
@@ -132,10 +121,24 @@ func (s *CustomerService) UpdateCustomer(id int, req dto.UpdateCustomerRequest) 
 	}, nil
 }
 
-func (s *CustomerService) DeleteCustomer(id int) error {
-	if err := s.db.Delete(&models.Customer{}, id).Error; err != nil {
+func (s *UserService) DeleteCustomer(id int) error {
+	if err := s.db.Delete(&models.User{}, id).Error; err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (s *UserService) AuthenticateUser(email, password string) (*models.User, error) {
+	var user models.User
+	result := s.db.Where("email = ?", email).First(&user)
+	if result.Error != nil {
+		return nil, errors.New("user not found")
+	}
+	// Проверяем пароль
+	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
+	if err != nil {
+		return nil, errors.New("invalid password")
+	}
+	return &user, nil
 }
