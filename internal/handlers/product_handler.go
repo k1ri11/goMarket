@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"goMarket/internal/dto"
 	"goMarket/internal/services"
 	"net/http"
@@ -18,7 +21,24 @@ func NewProductHandler(service *services.ProductService) *ProductHandler {
 
 // GetProducts возвращает список всех продуктов.
 func (h *ProductHandler) GetProducts(c *gin.Context) {
-	products, err := h.service.GetAllProducts()
+	var filter dto.ProductFilterRequest
+	if err := c.ShouldBindQuery(&filter); err != nil {
+		var errorMessages []string
+		var errs validator.ValidationErrors
+		if errors.As(err, &errs) {
+			for _, e := range errs {
+				errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' failed validation, condition: %s", e.Field(), e.ActualTag()))
+			}
+		}
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"error":   "Validation failed",
+			"details": errorMessages,
+			"code":    http.StatusUnprocessableEntity,
+		})
+		return
+	}
+
+	products, err := h.service.GetFilteredProducts(filter)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve products"})
 		return

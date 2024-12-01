@@ -9,6 +9,7 @@ import (
 	"goMarket/internal/services"
 	"gorm.io/gorm"
 	"net/http"
+	"time"
 )
 
 func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
@@ -39,6 +40,8 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 
 	authService := services.NewJWTAuthService(internal.JWTSecretKey, db)
 	authHandler := handlers.NewAuthHandler(authService)
+
+	router.Use(middleware.TimeoutMiddleware(5 * time.Second))
 
 	api := router.Group("/v1")
 	{

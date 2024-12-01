@@ -22,6 +22,16 @@ type UpdateProductRequest struct {
 	Description *string  `json:"description,omitempty"`
 }
 
+type ProductFilterRequest struct {
+	Name       *string  `form:"name,omitempty"`
+	Brand      *string  `form:"brand,omitempty"`
+	CategoryID *int32   `form:"category_id,omitempty"`
+	MinPrice   *float64 `form:"min_price,omitempty"`
+	MaxPrice   *float64 `form:"max_price,omitempty"`
+	Page       int      `form:"page" binding:"gte=1"`
+	PageSize   int      `form:"page_size" binding:"gte=1"`
+}
+
 // ProductResponse represents the output returned to the client.
 type ProductResponse struct {
 	ProductID   int32      `json:"product_id"`
@@ -32,4 +42,11 @@ type ProductResponse struct {
 	Stock       *int32     `json:"stock"`
 	Description *string    `json:"description"`
 	CreatedAt   *time.Time `json:"created_at"`
+}
+
+type ProductResponsePagination struct {
+	Data       []ProductResponse `json:"data"`
+	TotalCount int64             `json:"total_count"`
+	Page       int               `json:"page"`
+	PageSize   int               `json:"page_size"`
 }
