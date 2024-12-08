@@ -1,0 +1,82 @@
+[
+  {
+    "product_id": 1,
+    "name": "Smartphone",
+    "brand": "TechBrand",
+    "model": "X100",
+    "price": 799.99,
+    "stock": 50,
+    "description": "High-end smartphone with excellent features",
+    "created_at": "2024-12-01T12:59:52.512548Z"
+  },
+  {
+    "product_id": 2,
+    "name": "Laptop",
+    "brand": "ComputePro",
+    "model": "L200",
+    "price": 1199.99,
+    "stock": 30,
+    "description": "Lightweight laptop with powerful performance",
+    "created_at": "2024-12-01T12:59:52.512548Z"
+  },
+  {
+    "product_id": 3,
+    "name": "Headphones",
+    "brand": "SoundWave",
+    "model": "H300",
+    "price": 199.99,
+    "stock": 100,
+    "description": "Wireless headphones with noise cancellation",
+    "created_at": "2024-12-01T12:59:52.512548Z"
+  },
+  {
+    "product_id": 4,
+    "name": "Tablet",
+    "brand": "TechBrand",
+    "model": "T500",
+    "price": 499.99,
+    "stock": 20,
+    "description": "Portable tablet with high-resolution display",
+    "created_at": "2024-12-01T13:03:35.76548Z"
+  },
+  {
+    "product_id": 5,
+    "name": "Smartwatch",
+    "brand": "WearTime",
+    "model": "W100",
+    "price": 249.99,
+    "stock": 40,
+    "description": "Smartwatch with fitness tracking",
+    "created_at": "2024-12-01T13:03:35.76548Z"
+  },
+  {
+    "product_id": 6,
+    "name": "Gaming Console",
+    "brand": "GameZone",
+    "model": "G1",
+    "price": 299.99,
+    "stock": 15,
+    "description": "Popular gaming console with immersive experience",
+    "created_at": "2024-12-01T13:03:35.76548Z"
+  },
+  {
+    "product_id": 7,
+    "name": "Bluetooth Speaker",
+    "brand": "SoundWave",
+    "model": "S100",
+    "price": 99.99,
+    "stock": 60,
+    "description": "Portable speaker with excellent sound quality",
+    "created_at": "2024-12-01T13:03:35.76548Z"
+  },
+  {
+    "product_id": 8,
+    "name": "External Hard Drive",
+    "brand": "StoragePro",
+    "model": "HDD1TB",
+    "price": 79.99,
+    "stock": 25,
+    "description": "1TB external hard drive for secure data storage",
+    "created_at": "2024-12-01T13:03:35.76548Z"
+  }
+]

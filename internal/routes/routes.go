@@ -41,7 +41,10 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 	authService := services.NewJWTAuthService(internal.JWTSecretKey, db)
 	authHandler := handlers.NewAuthHandler(authService)
 
-	router.Use(middleware.TimeoutMiddleware(5 * time.Second))
+	taskService := services.NewTaskService(productService)
+	taskHandler := handlers.NewTaskHandler(taskService)
+
+	router.Use(middleware.TimeoutMiddleware(15 * time.Second))
 
 	api := router.Group("/v1")
 	{
@@ -125,6 +128,14 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 			orderItems.POST("/", orderItemHandler.CreateOrderItem)
 			orderItems.PUT("/:id", orderItemHandler.UpdateOrderItem)
 			orderItems.DELETE("/:id", orderItemHandler.DeleteOrderItem)
+		}
+
+		taskRoutes := api.Group("/tasks")
+		{
+			taskRoutes.Use(middleware.JWTMiddleware())
+			taskRoutes.POST("/", taskHandler.CreateTask)
+			taskRoutes.GET("/:id", taskHandler.GetTaskStatus)
+			taskRoutes.DELETE("/:id", taskHandler.CancelTask)
 		}
 
 	}
