@@ -1,0 +1,1625 @@
+basePath: /
+definitions:
+  dto.CartItemResponse:
+    properties:
+      cart_id:
+        type: integer
+      cart_item_id:
+        type: integer
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  dto.CategoryResponse:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  dto.CreateCartItemRequest:
+    properties:
+      cart_id:
+        type: integer
+      product_id:
+        type: integer
+      quantity:
+        minimum: 1
+        type: integer
+    required:
+    - cart_id
+    - product_id
+    - quantity
+    type: object
+  dto.CreateCategoryRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  dto.CreateOrderItemRequest:
+    properties:
+      order_id:
+        type: integer
+      price:
+        type: number
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - order_id
+    - price
+    - product_id
+    - quantity
+    type: object
+  dto.CreateOrderRequest:
+    properties:
+      customer_id:
+        type: integer
+      status:
+        type: string
+      total_price:
+        type: number
+    required:
+    - customer_id
+    - status
+    - total_price
+    type: object
+  dto.CreateProductRequest:
+    properties:
+      brand:
+        type: string
+      description:
+        type: string
+      model:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+    required:
+    - name
+    - price
+    type: object
+  dto.CreateShoppingCartRequest:
+    properties:
+      customer_id:
+        type: integer
+    required:
+    - customer_id
+    type: object
+  dto.CreateUserRequest:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    type: object
+  dto.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  dto.LoginRequest:
+    properties:
+      email:
+        example: abc@mail.ru
+        type: string
+      password:
+        example: "1234567"
+        type: string
+    type: object
+  dto.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  dto.OrderItemResponse:
+    properties:
+      order_id:
+        type: integer
+      order_item_id:
+        type: integer
+      price:
+        type: number
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  dto.OrderResponse:
+    properties:
+      created_at:
+        type: string
+      customer_id:
+        type: integer
+      order_id:
+        type: integer
+      shipped_at:
+        type: string
+      status:
+        type: string
+      total_price:
+        type: number
+    type: object
+  dto.ProductResponse:
+    properties:
+      brand:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      model:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      product_id:
+        type: integer
+      stock:
+        type: integer
+    type: object
+  dto.ProductResponsePagination:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.ProductResponse'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_count:
+        type: integer
+    type: object
+  dto.ShoppingCartResponse:
+    properties:
+      cart_id:
+        type: integer
+      created_at:
+        type: string
+      customer_id:
+        type: integer
+    type: object
+  dto.UpdateCartItemRequest:
+    properties:
+      quantity:
+        minimum: 1
+        type: integer
+    type: object
+  dto.UpdateCategoryRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  dto.UpdateOrderItemRequest:
+    properties:
+      price:
+        type: number
+      quantity:
+        type: integer
+    type: object
+  dto.UpdateOrderRequest:
+    properties:
+      shipped_at:
+        example: "2024-12-12T12:00:00Z"
+        type: string
+      status:
+        type: string
+    type: object
+  dto.UpdateProductRequest:
+    properties:
+      brand:
+        type: string
+      description:
+        type: string
+      model:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+    type: object
+  dto.UpdateShoppingCartRequest:
+    properties:
+      customer_id:
+        type: integer
+    type: object
+  dto.UpdateUserRequest:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+    type: object
+  dto.UserResponseDTO:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      created_at:
+        type: string
+      customer_id:
+        type: integer
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: goMarket API
+  version: "1.0"
+paths:
+  /v1/auth/jwt/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация пользователя с использованием email и пароля
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешная авторизация
+          schema:
+            $ref: '#/definitions/dto.LoginResponse'
+        "400":
+          description: Ошибка валидации данных
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Ошибка авторизации
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Вход пользователя
+      tags:
+      - Авторизация
+  /v1/auth/jwt/logout:
+    post:
+      description: Завершение сессии пользователя
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный выход
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Ошибка аутентификации
+          schema:
+            $ref: '#/definitions/dto.LoginResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Выход пользователя
+      tags:
+      - Авторизация
+  /v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Создает нового пользователя и регистрирует его в системе.
+      parameters:
+      - description: Данные для регистрации пользователя
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Пользователь успешно зарегистрирован
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка валидации данных
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Регистрация нового пользователя
+      tags:
+      - Авторизация
+  /v1/cart_items:
+    get:
+      description: Возвращает список всех элементов корзины
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список элементов корзины
+          schema:
+            items:
+              $ref: '#/definitions/dto.CartItemResponse'
+            type: array
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение всех элементов корзины
+      tags:
+      - Элемент корзины
+    post:
+      consumes:
+      - application/json
+      description: Создает новый элемент корзины
+      parameters:
+      - description: Данные для нового элемента корзины
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateCartItemRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Созданный элемент корзины
+          schema:
+            $ref: '#/definitions/dto.CartItemResponse'
+        "400":
+          description: Ошибка валидации данных
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - BearerAuth: []
+      summary: Добавление нового элемента в корзину
+      tags:
+      - Элемент корзины
+  /v1/cart_items/{id}:
+    delete:
+      description: Удаляет элемент корзины по его ID
+      parameters:
+      - description: ID элемента корзины
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешное удаление
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Некорректный ID
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - BearerAuth: []
+      summary: Удаление элемента корзины
+      tags:
+      - Элемент корзины
+    get:
+      description: Возвращает информацию об элементе корзины по его ID
+      parameters:
+      - description: ID элемента корзины
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Информация об элементе корзины
+          schema:
+            $ref: '#/definitions/dto.CartItemResponse'
+        "400":
+          description: Некорректный ID
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Элемент корзины не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - BearerAuth: []
+      summary: Получение элемента корзины по ID
+      tags:
+      - Элемент корзины
+    put:
+      consumes:
+      - application/json
+      description: Обновляет данные элемента корзины по его ID
+      parameters:
+      - description: ID элемента корзины
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные для обновления элемента корзины
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateCartItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновленный элемент корзины
+          schema:
+            $ref: '#/definitions/dto.CartItemResponse'
+        "400":
+          description: Ошибка валидации данных или некорректный ID
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - BearerAuth: []
+      summary: Обновление элемента корзины
+      tags:
+      - Элемент корзины
+  /v1/categories:
+    get:
+      description: Получение списка всех категорий
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список категорий
+          schema:
+            items:
+              $ref: '#/definitions/dto.CategoryResponse'
+            type: array
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all categories
+      tags:
+      - Категория
+    post:
+      consumes:
+      - application/json
+      description: Создание новой категории
+      parameters:
+      - description: Данные для создания категории
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Созданная категория
+          schema:
+            $ref: '#/definitions/dto.CategoryResponse'
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new category
+      tags:
+      - Категория
+  /v1/categories/{id}:
+    delete:
+      description: Удаление категории по ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Сообщение об успешном удалении
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Некорректный ID
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a category
+      tags:
+      - Категория
+    get:
+      description: Получение категории по ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Категория
+          schema:
+            $ref: '#/definitions/dto.CategoryResponse'
+        "400":
+          description: Некорректный ID
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Категория не найдена
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get category by ID
+      tags:
+      - Категория
+    put:
+      consumes:
+      - application/json
+      description: Обновление категории по ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные для обновления категории
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновленная категория
+          schema:
+            $ref: '#/definitions/dto.CategoryResponse'
+        "400":
+          description: Некорректные данные или ID
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update an existing category
+      tags:
+      - Категория
+  /v1/order_items:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список всех товаров, связанных с заказами
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.OrderItemResponse'
+            type: array
+        "500":
+          description: Ошибка получения товаров в заказах
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение всех товаров в заказах
+      tags:
+      - Элемент заказа
+    post:
+      consumes:
+      - application/json
+      description: Создает новый товар в заказе
+      parameters:
+      - description: Данные товара
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateOrderItemRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.OrderItemResponse'
+        "400":
+          description: Ошибка в данных товара
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка создания товара в заказе
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создание товара в заказе
+      tags:
+      - Элемент заказа
+  /v1/order_items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет товар из заказа по ID
+      parameters:
+      - description: ID товара в заказе
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Неверный ID товара в заказе
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка удаления товара из заказа
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Удаление товара из заказа
+      tags:
+      - Элемент заказа
+    get:
+      consumes:
+      - application/json
+      description: Возвращает товар по ID из заказа
+      parameters:
+      - description: ID товара в заказе
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.OrderItemResponse'
+        "400":
+          description: Неверный ID товара в заказе
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Товар в заказе не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка получения товара
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение товара в заказе по ID
+      tags:
+      - Элемент заказа
+    put:
+      consumes:
+      - application/json
+      description: Обновляет данные товара в заказе по его ID
+      parameters:
+      - description: ID товара в заказе
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Обновленные данные товара
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateOrderItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.OrderItemResponse'
+        "400":
+          description: Ошибка в данных товара
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Товар в заказе не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка обновления товара
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Обновление товара в заказе
+      tags:
+      - Элемент заказа
+  /v1/orders:
+    get:
+      description: Возвращает список всех заказов
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список заказов
+          schema:
+            items:
+              $ref: '#/definitions/dto.OrderResponse'
+            type: array
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получить все заказы
+      tags:
+      - Заказ
+    post:
+      consumes:
+      - application/json
+      description: Создает новый заказ
+      parameters:
+      - description: Данные для создания заказа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Созданный заказ
+          schema:
+            $ref: '#/definitions/dto.OrderResponse'
+        "400":
+          description: Ошибка валидации запроса
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создать заказ
+      tags:
+      - Заказ
+  /v1/orders/{id}:
+    delete:
+      description: Удаляет заказ по его идентификатору
+      parameters:
+      - description: ID заказа
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Сообщение об успешном удалении
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Неверный ID заказа
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Удалить заказ
+      tags:
+      - Заказ
+    get:
+      description: Возвращает данные заказа по его идентификатору
+      parameters:
+      - description: ID заказа
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Данные заказа
+          schema:
+            $ref: '#/definitions/dto.OrderResponse'
+        "400":
+          description: Неверный ID заказа
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Заказ не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получить заказ по ID
+      tags:
+      - Заказ
+    put:
+      consumes:
+      - application/json
+      description: Обновляет данные существующего заказа
+      parameters:
+      - description: ID заказа
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные для обновления заказа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновленный заказ
+          schema:
+            $ref: '#/definitions/dto.OrderResponse'
+        "400":
+          description: Ошибка валидации запроса или ID заказа
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Обновить заказ
+      tags:
+      - Заказ
+  /v1/products:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список всех продуктов с возможностью фильтрации по параметрам.
+      parameters:
+      - in: query
+        name: brand
+        type: string
+      - in: query
+        name: category_id
+        type: integer
+      - in: query
+        name: max_price
+        type: number
+      - in: query
+        name: min_price
+        type: number
+      - in: query
+        name: name
+        type: string
+      - in: query
+        minimum: 1
+        name: page
+        type: integer
+      - in: query
+        minimum: 1
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список продуктов
+          schema:
+            items:
+              $ref: '#/definitions/dto.ProductResponsePagination'
+            type: array
+        "400":
+          description: Неверный ID продукта
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение списка всех продуктов
+      tags:
+      - Продукт
+    post:
+      consumes:
+      - application/json
+      description: Добавляет новый продукт в базу данных.
+      parameters:
+      - description: Данные нового продукта
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Созданный продукт
+          schema:
+            $ref: '#/definitions/dto.ProductResponse'
+        "400":
+          description: Некорректные данные запроса
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Добавление нового продукта
+      tags:
+      - Продукт
+  /v1/products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет продукт из базы данных по ID.
+      parameters:
+      - description: ID продукта
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Продукт удален успешно
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Неверный ID продукта
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Продукт не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Удаление продукта
+      tags:
+      - Продукт
+    get:
+      consumes:
+      - application/json
+      description: Возвращает продукт, соответствующий переданному ID.
+      parameters:
+      - description: ID продукта
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Продукт
+          schema:
+            $ref: '#/definitions/dto.ProductResponse'
+        "400":
+          description: Неверный ID продукта
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Продукт не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение продукта по ID
+      tags:
+      - Продукт
+    put:
+      consumes:
+      - application/json
+      description: Обновляет данные продукта по переданному ID.
+      parameters:
+      - description: ID продукта
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные для обновления продукта
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновленный продукт
+          schema:
+            $ref: '#/definitions/dto.ProductResponse'
+        "400":
+          description: Неверный ID продукта
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Продукт не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Обновление существующего продукта
+      tags:
+      - Продукт
+  /v1/shopping_carts:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список всех корзин покупок.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список корзин покупок
+          schema:
+            items:
+              $ref: '#/definitions/dto.ShoppingCartResponse'
+            type: array
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение всех корзин покупок
+      tags:
+      - Корзина
+    post:
+      consumes:
+      - application/json
+      description: Создает новую корзину покупок.
+      parameters:
+      - description: Данные для создания корзины
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateShoppingCartRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Корзина покупок успешно создана
+          schema:
+            $ref: '#/definitions/dto.ShoppingCartResponse'
+        "400":
+          description: Ошибка валидации данных
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создание корзины покупок
+      tags:
+      - Корзина
+  /v1/shopping_carts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет корзину покупок по указанному ID.
+      parameters:
+      - description: ID корзины
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Корзина покупок удалена успешно
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Неверный ID корзины
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Удаление корзины покупок
+      tags:
+      - Корзина
+    get:
+      consumes:
+      - application/json
+      description: Возвращает корзину покупок по указанному ID.
+      parameters:
+      - description: ID корзины
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Корзина покупок
+          schema:
+            $ref: '#/definitions/dto.ShoppingCartResponse'
+        "400":
+          description: Неверный ID корзины
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Корзина покупок не найдена
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение корзины покупок по ID
+      tags:
+      - Корзина
+    put:
+      consumes:
+      - application/json
+      description: Обновляет данные корзины покупок по указанному ID.
+      parameters:
+      - description: ID корзины
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные для обновления корзины
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateShoppingCartRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Корзина покупок успешно обновлена
+          schema:
+            $ref: '#/definitions/dto.ShoppingCartResponse'
+        "400":
+          description: Неверный ID корзины
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Корзина покупок не найдена
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Обновление корзины покупок
+      tags:
+      - Корзина
+  /v1/tasks:
+    post:
+      consumes:
+      - application/json
+      description: Создает новую задачу для обработки экспорта и возвращает ID задачи
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка создания задачи
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создание новой задачи экспорта
+      tags:
+      - Задачи
+  /v1/tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Отменяет задачу по ID и прекращает ее обработку
+      parameters:
+      - description: ID задачи
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Неверный ID задачи
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Задача не найдена
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка отмены задачи
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Отмена задачи по ID
+      tags:
+      - Задачи
+    get:
+      consumes:
+      - application/json
+      description: Получает статус, путь к файлу и возможные ошибки для задачи по
+        ее ID
+      parameters:
+      - description: ID задачи
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Неверный ID задачи
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Задача не найдена
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка получения статуса задачи
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение статуса задачи по ID
+      tags:
+      - Задачи
+  /v1/users:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список всех зарегистрированных пользователей.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список пользователей
+          schema:
+            items:
+              $ref: '#/definitions/dto.UserResponseDTO'
+            type: array
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение всех пользователей
+      tags:
+      - Пользователь
+  /v1/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет пользователя из системы по указанному ID.
+      parameters:
+      - description: ID пользователя
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователь успешно удален
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Неверный ID пользователя
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Удаление пользователя
+      tags:
+      - Пользователь
+    get:
+      consumes:
+      - application/json
+      description: Возвращает данные пользователя по указанному ID.
+      parameters:
+      - description: ID пользователя
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователь
+          schema:
+            $ref: '#/definitions/dto.UserResponseDTO'
+        "400":
+          description: Неверный ID пользователя
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Пользователь не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение пользователя по ID
+      tags:
+      - Пользователь
+  /v1/users/current:
+    put:
+      consumes:
+      - application/json
+      description: Обновляет данные текущего пользователя на основе запроса.
+      parameters:
+      - description: Данные для обновления пользователя
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователь успешно обновлен
+          schema:
+            $ref: '#/definitions/dto.UserResponseDTO'
+        "400":
+          description: Ошибка валидации данных
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Пользователь не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Обновление данных текущего пользователя
+      tags:
+      - Пользователь
+  /v1/users/me:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает данные текущего пользователя, основываясь на информации
+        из контекста.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Информация о текущем пользователе
+          schema:
+            $ref: '#/definitions/dto.UserResponseDTO'
+        "401":
+          description: Пользователь не найден
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получение информации о текущем пользователе
+      tags:
+      - Авторизация
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
