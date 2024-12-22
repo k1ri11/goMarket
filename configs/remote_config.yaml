@@ -4,7 +4,7 @@ server:
 
 db:
   user: "kirill"
-  password: "jcWHs2n0lco5H4Vqeoiue2KsIxlL0U8F"
-  name: "go_market_db"
-  host: "dpg-cstp0tbv2p9s73csfic0-a"
+  password: "wLvg8RmgjNKZx198jKEYaPZ1XGvKpJBr"
+  name: "go_market_db_8858"
+  host: "dpg-ctk6u0i3esus73e6asc0-a"
   port: "5432"
