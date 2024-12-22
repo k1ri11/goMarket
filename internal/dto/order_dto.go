@@ -12,7 +12,7 @@ type CreateOrderRequest struct {
 
 type UpdateOrderRequest struct {
 	Status    *string    `json:"status,omitempty"`
-	ShippedAt *time.Time `json:"shipped_at,omitempty"`
+	ShippedAt *time.Time `json:"shipped_at,omitempty" example:"2024-12-12T12:00:00Z"`
 }
 
 type OrderResponse struct {

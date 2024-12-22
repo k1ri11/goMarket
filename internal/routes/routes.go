@@ -3,6 +3,8 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/mux"
+	swaggerFiles "github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	"goMarket/internal"
 	"goMarket/internal/handlers"
 	"goMarket/internal/middleware"
@@ -45,6 +47,9 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 	taskHandler := handlers.NewTaskHandler(taskService)
 
 	router.Use(middleware.TimeoutMiddleware(15 * time.Second))
+
+	// Настройка маршрута для Swagger
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	api := router.Group("/v1")
 	{

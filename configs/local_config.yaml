@@ -5,6 +5,6 @@ db:
   user: "postgres"
   password: "1234"
   name: "online_store"
-#  host: "0.0.0.0"
-  host: postgresql
+  host: "0.0.0.0"
+  #  host: postgresql
   port: "5432"

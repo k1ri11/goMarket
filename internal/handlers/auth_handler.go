@@ -31,7 +31,17 @@ func getUserIdFromContext(c *gin.Context) (int32, error) {
 	return int32(userIDInt), nil
 }
 
-// Хендлер для логина с сессией
+// Login
+// @Summary Вход пользователя
+// @Description Авторизация пользователя с использованием email и пароля
+// @Tags Авторизация
+// @Accept json
+// @Produce json
+// @Param request body dto.LoginRequest true "Данные для входа"
+// @Success 200 {object} dto.LoginResponse "Успешная авторизация"
+// @Failure 400 {object} dto.ErrorResponse "Ошибка валидации данных"
+// @Failure 401 {object} dto.ErrorResponse "Ошибка авторизации"
+// @Router /v1/auth/jwt/login [post]
 func (h *AuthHandler) Login(c *gin.Context) {
 	var request dto.LoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -48,7 +58,16 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, loginResponse)
 }
 
-// Хендлер для логаута
+// Logout
+// @Summary Выход пользователя
+// @Description Завершение сессии пользователя
+// @Tags Авторизация
+// @Produce json
+// @Success 200 {object} map[string]interface{} "Успешный выход"
+// @Failure 401 {object} dto.LoginResponse "Ошибка аутентификации"
+// @Failure 500 {object} dto.ErrorResponse "Ошибка сервера"
+// @Security BearerAuth
+// @Router /v1/auth/jwt/logout [post]
 func (h *AuthHandler) Logout(c *gin.Context) {
 	userID, err := getUserIdFromContext(c) // Предполагаем, что userID хранится в контексте после авторизации
 	if err != nil {
