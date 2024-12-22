@@ -1,0 +1,32 @@
+services:
+
+  app:
+    image: go-market-image
+    container_name: go-market
+    volumes:
+      - ./:/app
+    networks:
+      - app_network
+    depends_on:
+      - postgresql
+    ports:
+      - "8080:8080"
+
+
+  postgresql:
+    image: postgres:15
+    container_name: postgres_container
+    environment:
+      - POSTGRES_DB=online_store
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+    networks:
+      - app_network
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+
+networks:
+  app_network:
+    driver: bridge

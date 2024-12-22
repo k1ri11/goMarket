@@ -9,6 +9,7 @@ customer_id SERIAL PRIMARY KEY,
 first_name VARCHAR(50) NOT NULL,
 last_name VARCHAR(50) NOT NULL,
 email VARCHAR(100) UNIQUE NOT NULL,
+password_hash VARCHAR(255),
 phone VARCHAR(20),
 address TEXT,
 city VARCHAR(50),
@@ -31,7 +32,7 @@ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 ### Таблица Заказ (Order)
 
-CREATE TABLE "Order" (
+CREATE TABLE "order" (
 order_id SERIAL PRIMARY KEY,
 customer_id INT REFERENCES Customer(customer_id) ON DELETE CASCADE,
 total_price DECIMAL(10, 2) NOT NULL,
@@ -44,7 +45,7 @@ shipped_at TIMESTAMP
 
 CREATE TABLE Order_Item (
 order_item_id SERIAL PRIMARY KEY,
-order_id INT REFERENCES "Order"(order_id) ON DELETE CASCADE,
+order_id INT REFERENCES "order"(order_id) ON DELETE CASCADE,
 product_id INT REFERENCES Product(product_id) ON DELETE CASCADE,
 quantity INT NOT NULL,
 price DECIMAL(10, 2) NOT NULL
@@ -54,7 +55,7 @@ price DECIMAL(10, 2) NOT NULL
 
 CREATE TABLE Payment (
 payment_id SERIAL PRIMARY KEY,
-order_id INT REFERENCES "Order"(order_id) ON DELETE CASCADE,
+order_id INT REFERENCES "order"(order_id) ON DELETE CASCADE,
 amount DECIMAL(10, 2) NOT NULL,
 payment_method VARCHAR(50) NOT NULL,
 payment_status VARCHAR(50) DEFAULT 'pending',
@@ -109,7 +110,7 @@ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 CREATE TABLE Shipping_Info (
 shipping_id SERIAL PRIMARY KEY,
-order_id INT REFERENCES "Order"(order_id) ON DELETE CASCADE,
+order_id INT REFERENCES "order"(order_id) ON DELETE CASCADE,
 shipping_address TEXT NOT NULL,
 shipping_method VARCHAR(50) NOT NULL,
 shipping_cost DECIMAL(10, 2) NOT NULL,
@@ -137,10 +138,9 @@ role_id INT REFERENCES Role(role_id) ON DELETE CASCADE
 
 CREATE TABLE User_Session (
 session_id SERIAL PRIMARY KEY,
-customer_id INT REFERENCES Customer(customer_id) ON DELETE CASCADE,
-session_token TEXT NOT NULL,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-expires_at TIMESTAMP
+user_id INT REFERENCES Customer(customer_id) ON DELETE CASCADE,
+start_time TIMESTAMP,
+end_time TIMESTAMP
 );
 
 ### Таблица Пользовательских Настроек (User_Settings)
