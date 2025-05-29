@@ -23,14 +23,18 @@ func (s *ProductService) GetAllProducts() ([]dto.ProductResponse, error) {
 	responses := make([]dto.ProductResponse, len(products))
 	for i, product := range products {
 		responses[i] = dto.ProductResponse{
-			ProductID:   product.ProductID,
-			Name:        product.Name,
-			Brand:       product.Brand,
-			Model:       product.Model,
-			Price:       product.Price,
-			Stock:       product.Stock,
-			Description: product.Description,
-			CreatedAt:   product.CreatedAt,
+			ProductID:      product.ProductID,
+			Name:           product.Name,
+			Brand:          product.Brand,
+			Model:          product.Model,
+			Price:          product.Price,
+			Stock:          product.Stock,
+			Description:    product.Description,
+			CreatedAt:      product.CreatedAt,
+			ReviewQuantity: product.ReviewQuantity,
+			BasePrice:      product.BasePrice,
+			Rating:         product.Rating,
+			ImageURL:       product.ImageURL,
 		}
 	}
 
@@ -77,14 +81,18 @@ func (s *ProductService) GetFilteredProducts(filter dto.ProductFilterRequest) (*
 	productsResponse := make([]dto.ProductResponse, len(products))
 	for i, p := range products {
 		productsResponse[i] = dto.ProductResponse{
-			ProductID:   p.ProductID,
-			Name:        p.Name,
-			Brand:       p.Brand,
-			Model:       p.Model,
-			Price:       p.Price,
-			Description: p.Description,
-			Stock:       p.Stock,
-			CreatedAt:   p.CreatedAt,
+			ProductID:      p.ProductID,
+			Name:           p.Name,
+			Brand:          p.Brand,
+			Model:          p.Model,
+			Price:          p.Price,
+			Stock:          p.Stock,
+			Description:    p.Description,
+			CreatedAt:      p.CreatedAt,
+			ReviewQuantity: p.ReviewQuantity,
+			BasePrice:      p.BasePrice,
+			Rating:         p.Rating,
+			ImageURL:       p.ImageURL,
 		}
 	}
 
@@ -105,14 +113,18 @@ func (s *ProductService) GetProductByID(id int) (*dto.ProductResponse, error) {
 	}
 
 	response := &dto.ProductResponse{
-		ProductID:   product.ProductID,
-		Name:        product.Name,
-		Brand:       product.Brand,
-		Model:       product.Model,
-		Price:       product.Price,
-		Stock:       product.Stock,
-		Description: product.Description,
-		CreatedAt:   product.CreatedAt,
+		ProductID:      product.ProductID,
+		Name:           product.Name,
+		Brand:          product.Brand,
+		Model:          product.Model,
+		Price:          product.Price,
+		Stock:          product.Stock,
+		Description:    product.Description,
+		CreatedAt:      product.CreatedAt,
+		ReviewQuantity: product.ReviewQuantity,
+		BasePrice:      product.BasePrice,
+		Rating:         product.Rating,
+		ImageURL:       product.ImageURL,
 	}
 
 	return response, nil
@@ -133,14 +145,18 @@ func (s *ProductService) CreateProduct(req dto.CreateProductRequest) (*dto.Produ
 	}
 
 	return &dto.ProductResponse{
-		ProductID:   product.ProductID,
-		Name:        product.Name,
-		Brand:       product.Brand,
-		Model:       product.Model,
-		Price:       product.Price,
-		Stock:       product.Stock,
-		Description: product.Description,
-		CreatedAt:   product.CreatedAt,
+		ProductID:      product.ProductID,
+		Name:           product.Name,
+		Brand:          product.Brand,
+		Model:          product.Model,
+		Price:          product.Price,
+		Stock:          product.Stock,
+		Description:    product.Description,
+		CreatedAt:      product.CreatedAt,
+		ReviewQuantity: product.ReviewQuantity,
+		BasePrice:      product.BasePrice,
+		Rating:         product.Rating,
+		ImageURL:       product.ImageURL,
 	}, nil
 }
 
@@ -174,14 +190,18 @@ func (s *ProductService) UpdateProduct(id int, req dto.UpdateProductRequest) (*d
 	}
 
 	return &dto.ProductResponse{
-		ProductID:   product.ProductID,
-		Name:        product.Name,
-		Brand:       product.Brand,
-		Model:       product.Model,
-		Price:       product.Price,
-		Stock:       product.Stock,
-		Description: product.Description,
-		CreatedAt:   product.CreatedAt,
+		ProductID:      product.ProductID,
+		Name:           product.Name,
+		Brand:          product.Brand,
+		Model:          product.Model,
+		Price:          product.Price,
+		Stock:          product.Stock,
+		Description:    product.Description,
+		CreatedAt:      product.CreatedAt,
+		ReviewQuantity: product.ReviewQuantity,
+		BasePrice:      product.BasePrice,
+		Rating:         product.Rating,
+		ImageURL:       product.ImageURL,
 	}, nil
 }
 

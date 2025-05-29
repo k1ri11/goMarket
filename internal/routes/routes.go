@@ -56,7 +56,6 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 		//Группа маршрутов для продуктов
 		products := api.Group("/products")
 		{
-			products.Use(middleware.JWTMiddleware())
 			products.GET("/:id", productHandler.GetProductByID)
 			products.GET("/", productHandler.GetProducts)
 			products.POST("/", productHandler.CreateProduct)
@@ -67,7 +66,6 @@ func CreateRouters(router *gin.Engine, db *gorm.DB) http.Handler {
 		// Группа маршрутов для категорий
 		categories := api.Group("/categories")
 		{
-			categories.Use(middleware.JWTMiddleware())
 			categories.GET("/", categoryHandler.GetAllCategories)
 			categories.GET("/:id", categoryHandler.GetCategoryByID)
 			categories.POST("/", categoryHandler.CreateCategory)

@@ -34,14 +34,18 @@ type ProductFilterRequest struct {
 
 // ProductResponse represents the output returned to the client.
 type ProductResponse struct {
-	ProductID   int32      `json:"product_id"`
-	Name        string     `json:"name"`
-	Brand       *string    `json:"brand"`
-	Model       *string    `json:"model"`
-	Price       float64    `json:"price"`
-	Stock       *int32     `json:"stock"`
-	Description *string    `json:"description"`
-	CreatedAt   *time.Time `json:"created_at"`
+	ProductID      int32      `json:"product_id"`
+	Name           string     `json:"name"`
+	Brand          *string    `json:"brand"`
+	Model          *string    `json:"model"`
+	Price          float64    `json:"price"`
+	Stock          *int32     `json:"stock"`
+	Description    *string    `json:"description"`
+	CreatedAt      *time.Time `json:"created_at"`
+	ReviewQuantity *int32     `json:"review_quantity"`
+	BasePrice      *float64   `json:"base_price"`
+	Rating         *float64   `json:"rating"`
+	ImageURL       *string    `json:"image_url"`
 }
 
 type ProductResponsePagination struct {
